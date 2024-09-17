@@ -1,4 +1,6 @@
 {-# OPTIONS_GHC -Wno-unused-top-binds -Wname-shadowing #-}
+{-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
+{-# HLINT ignore "Eta reduce" #-}
 -- A module - a single unit of compilation
 module Lessons.Lesson01 (foo) where
 
@@ -66,8 +68,8 @@ tt = (0, 0, 0)
 -- so we have to use pattern matching to
 -- deconstruct a tuple and extract values
 fst' :: (a, b, c) -> a
-fst' t =
-    case t of -- pattern match
+fst' h =
+    case h of -- pattern match
         (e1, _, _) -> e1
 --      ^
 --      a pattern
@@ -90,7 +92,7 @@ head' (h:_) = h
 -- >>> add 4 4
 -- 8
 add :: Integer -> Integer -> Integer
-add a b = a + b
+add a b' = a + b'
 
 -- If we pass less arguments than needed,
 -- we get a function which requires all

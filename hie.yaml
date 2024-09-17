@@ -1,0 +1,12 @@
+cradles:
+  - path: "./app1"
+    config: {cradle: {stack: {component: "fp2024:exe:fp2024-one"}}}
+
+  - path: "./src"
+    config: {cradle: {stack: {component: "fp2024:lib"}}}
+
+  - path: "./test"
+    config: {cradle: {stack: {component: "fp2024:test:fp2024-test"}}}
+
+  - path: "./doctest"
+    config: {cradle: {stack: {component: "fp2024:test:fp2024-doctest"}}}

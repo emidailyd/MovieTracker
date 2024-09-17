@@ -1,0 +1,37 @@
+<movie_tracker> ::= <task_list>
+
+<task_list> ::= <task> | <task> ";" <task_list>
+
+<task> ::= <add_movie> | <rate_movie> | <update_movie> | <remove_movie> | <list_movies> | <view_movie_details>
+
+<add_movie> ::= "add_movie" "(" <title> "," <genre> "," <director> "," <year> ")"
+
+<rate_movie> ::= "rate_movie" "(" <movie_id> "," <rating> ")"
+
+<update_movie> ::= "update_movie" "(" <movie_id> "," <title> "," <genre> "," <director> "," <year> ")"
+
+<remove_movie> ::= "remove_movie" "(" <movie_id> ")"
+
+<list_movies> ::= "list_movies" "(" <filter> ")"
+
+<view_movie_details> ::= "view_movie_details" "(" <movie_id> ")"
+
+<filter> ::= "all" | "genre:" <genre> | "year:" <year>
+
+<title> ::= <string>
+
+<genre> ::= "Action" | "Drama" | "Comedy" | "Horror" | "SciFi" | "Romance" | <string>
+
+<director> ::= <string>
+
+<year> ::= <number>
+
+<rating> ::= <number> "." <number> | <number>
+
+<movie_id> ::= <number>
+
+<string> ::= <letter> | <letter> <string>
+
+<letter> ::= "a" | "b" | "c" | ... | "z" | "A" | "B" | ... | "Z"
+
+<number> ::= "0" | "1" | "2" | ... | "9"
