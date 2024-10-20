@@ -27,9 +27,23 @@ completer :: (Monad m) => WordCompleter m
 completer n =
   return $ Prelude.filter (L.isPrefixOf n) Lib1.completions
 
--- Evaluation : handle each line user inputs
+-- Evaluation: Handle each line user inputs
 cmd :: String -> Repl ()
-cmd _ = return ()
+cmd input =
+  case words input of
+    ("add_movie":title:genre:director:year:[]) -> do
+      -- Call your add movie function here, passing the parsed values
+      let movieTitle = unwords title
+      let movieGenre = genre
+      let movieDirector = director
+      let movieYear = read year :: Int
+      liftIO $ putStrLn $ "Adding movie: " ++ movieTitle ++ ", Genre: " ++ movieGenre ++ ", Director: " ++ movieDirector ++ ", Year: " ++ show movieYear
+    ("view_movie_details":movieId:[]) -> do
+      -- Call the view_movie_details function here with movieId
+      let id = read movieId :: Int
+      liftIO $ putStrLn $ "Fetching details for movie ID: " ++ show id
+    _ -> liftIO $ putStrLn "Unrecognized command"
+
 
 main :: IO ()
 main =
