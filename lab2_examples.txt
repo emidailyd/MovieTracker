@@ -1,0 +1,41 @@
+>>> add_movie(Die Hard, Action, John McTiernan, 1988)
+Added movie: (1) "Die Hard" (Action, John McTiernan, 1988, 0.0)
+>>> update_movie(1, Die Easy, _, _, _)
+Updated movie: (1) "Die Easy" (Action, John McTiernan, 1988, 0.0)
+
+
+
+
+>>> add_movie(Gladiator, Action, Ridley Scott, 2000)
+Added movie: (1) "Gladiator" (Action, Ridley Scott, 2000, 0.0)
+>>> view_movie_details(1)
+(1) "Gladiator" (Action, Ridley Scott, 2000, 0.0)
+>>> rate_movie(1, 9.5)
+Updated movie rating: (1) "Gladiator" (Action, Ridley Scott, 2000, 9.5)
+>>> update_movie(1, Not a Gladiator, _, _, _)
+Updated movie: (1) "Not a Gladiator" (Action, Ridley Scott, 2000, 9.5)
+>>> list_movies(all)
+All Movies:
+(1) "Not a Gladiator" (Action, Ridley Scott, 2000, 9.5)
+>>> add_movie(Inception, Action, Christopher Nolan, 2010)
+Added movie: (2) "Inception" (Action, Christopher Nolan, 2010, 0.0)
+>>> list_movies(genre:Action)
+Movies in genre Action:
+(2) "Inception" (Action, Christopher Nolan, 2010, 0.0)
+(1) "Not a Gladiator" (Action, Ridley Scott, 2000, 9.5)
+>>> remove_movie(1)
+Movie removed
+>>> list_movies(all)
+All Movies:
+(2) "Inception" (Action, Christopher Nolan, 2010, 0.0)
+>>> 
+
+
+
+>>> add_movie(The Matrix, SciFi, Wachowski, 1999); add_movie(Harry Potter and the Prisoner of Azkaban, Action, Alfonso Cuaron, 2004); rate_movie(1, 9.2); list_movies(all)
+Added movie: (1) "The Matrix" (SciFi, Wachowski, 1999, 0.0)
+Added movie: (2) "Harry Potter and the Prisoner of Azkaban" (Action, Alfonso Cuaron, 2004, 0.0)
+Updated movie rating: (1) "The Matrix" (SciFi, Wachowski, 1999, 9.2)
+All Movies:
+(2) "Harry Potter and the Prisoner of Azkaban" (Action, Alfonso Cuaron, 2004, 0.0)
+(1) "The Matrix" (SciFi, Wachowski, 1999, 9.2)
