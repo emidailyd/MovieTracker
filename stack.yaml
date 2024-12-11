@@ -1,4 +1,6 @@
 resolver: lts-21.25
 system-ghc: true
 packages:
-- .
+  - .
+extra-deps:
+  - stm-2.5.1.0

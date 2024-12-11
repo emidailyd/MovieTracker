@@ -7,7 +7,11 @@ module Lib2
     parseQuery,
     State(..),
     emptyState,
-    stateTransition
+    stateTransition,
+    Movie(..),
+    trim,
+    splitBySemicolon,
+    movies
     ) where
 
 import qualified Data.List as L
@@ -22,7 +26,7 @@ data Movie = Movie
   , director :: String
   , year :: Int
   , rating :: Double
-  }
+  } deriving(Eq, Show)
 
 availableGenres :: [String]
 availableGenres = ["Action", "Comedy", "Drama", "Horror", "SciFi", "Romance"]
