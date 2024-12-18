@@ -1,0 +1,5 @@
+BEGIN
+add_movie(Gladiator, Action, Ridley Scott, 2000)
+rate_movie(1, 9.5)
+add_movie(Inception, Action, Christopher Nolan, 2010)
+END

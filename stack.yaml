@@ -4,3 +4,4 @@ packages:
   - .
 extra-deps:
   - stm-2.5.1.0
+  - tasty-quickcheck-0.10

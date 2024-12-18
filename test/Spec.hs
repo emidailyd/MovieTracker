@@ -1,56 +1,69 @@
-{-# LANGUAGE ImportQualifiedPost #-}
-import Test.Tasty ( TestTree, defaultMain, testGroup )
-import Test.Tasty.HUnit ( testCase, (@?=) )
+{-# LANGUAGE OverloadedStrings #-}
 
-import Lib2 qualified
+import Test.Tasty
+import Test.Tasty.QuickCheck as QC
+import qualified Lib2
+import qualified Lib3
+import Data.Function (on)
+import Data.List (sortBy)
 
 main :: IO ()
-main = defaultMain tests
+main = defaultMain $ testGroup "Lib3 Tests"
+    [ testProperty "marshallRenderRoundTrip" prop_marshallRenderRoundTrip
+    , testProperty "marshallPreservesOrder" prop_marshallPreservesOrder
+    ]
 
-tests :: TestTree
-tests = testGroup "Tests" [unitTests]
+prop_marshallRenderRoundTrip :: Property
+prop_marshallRenderRoundTrip = forAll genStateNonEmpty $ \state ->
+    let statements = Lib3.marshallState state
+        rendered = Lib3.renderStatements statements
+    in case Lib3.parseStatements rendered of
+        Right (parsedStatements, _) -> statementsAreEqual statements parsedStatements
+        Left err -> error ("Parsing failed: " ++ err)
 
-unitTests :: TestTree
-unitTests = testGroup "Lib2 tests"
-  [ testCase "Parsing empty string returns error" $
-      Lib2.parseQuery "" @?= Left "Unknown command or invalid input",
+prop_marshallPreservesOrder :: Property
+prop_marshallPreservesOrder = forAll genState $ \state ->
+    let sortedMovies = sortBy (compare `on` Lib2.movieId) (Lib2.movies state)
+        sortedState = Lib2.State sortedMovies
+        unsortedStatements = Lib3.marshallState state
+        sortedStatements = Lib3.marshallState sortedState
+    in Lib3.renderStatements unsortedStatements == Lib3.renderStatements sortedStatements
 
-    testCase "Parsing single character string returns error" $
-      Lib2.parseQuery "o" @?= Left "Unknown command or invalid input",
+genState :: Gen Lib2.State
+genState = do
+    movies <- listOf genMovie
+    return (Lib2.State movies)
 
-    testCase "Parsing add_movie query" $
-      Lib2.parseQuery "add_movie(The Matrix, SciFi, The Wachowskis, 1999)" 
-        @?= Right (Lib2.AddMovie "The Matrix" "SciFi" "The Wachowskis" 1999),
+genStateNonEmpty :: Gen Lib2.State
+genStateNonEmpty = do
+    movies <- listOf1 genMovie
+    return (Lib2.State movies)
 
-    testCase "Parsing add_movie query with invalid genre" $
-      Lib2.parseQuery "add_movie(The Matrix, Thriller, The Wachowskis, 1999)" 
-        @?= Left "Invalid genre: Thriller. Available genres are: Action Comedy Drama Horror SciFi Romance",
+validGenres :: [String]
+validGenres = ["Action", "Comedy", "Drama", "Horror", "SciFi", "Romance"]
 
-    testCase "Parsing remove_movie query" $
-      Lib2.parseQuery "remove_movie(1)" 
-        @?= Right (Lib2.RemoveMovie 1),
+genString :: Gen String
+genString = do
+    len <- choose (1, 20)
+    vectorOf len (elements ['a'..'z'])
 
-    testCase "Parsing rate_movie query" $
-      Lib2.parseQuery "rate_movie(1, 4.5)" 
-        @?= Right (Lib2.RateMovie 1 4.5),
+genMovie :: Gen Lib2.Movie
+genMovie = do
+    movieId <- choose (1, 100)
+    title <- genString
+    genre <- elements validGenres
+    director <- genString
+    year <- choose (1888, 2024)
+    rating <- genRating
+    return (Lib2.Movie movieId title genre director year rating)
 
-    testCase "Parsing update_movie query" $
-      Lib2.parseQuery "update_movie(1, The Matrix Reloaded, SciFi, The Wachowskis, 2003)" 
-        @?= Right (Lib2.UpdateMovie 1 (Just "The Matrix Reloaded") (Just "SciFi") (Just "The Wachowskis") (Just 2003)),
+genRating :: Gen Double
+genRating = do
+    intPart <- choose (0 :: Int, 9 :: Int)
+    decimalPart <- choose (0 :: Int, 9 :: Int)
+    return (fromIntegral intPart + fromIntegral decimalPart / 10.0)
 
-    testCase "Parsing view_movie_details query" $
-      Lib2.parseQuery "view_movie_details(1)" 
-        @?= Right (Lib2.ViewMovieDetails 1),
-
-    testCase "Parsing list_movies query" $
-      Lib2.parseQuery "list_movies(genre:SciFi)" 
-        @?= Right (Lib2.ListMovies "genre:SciFi"),
-
-    testCase "Parsing sequence of queries" $
-      Lib2.parseQuery "add_movie(The Matrix, SciFi, The Wachowskis, 1999); rate_movie(1, 4.5); remove_movie(1)" 
-        @?= Right (Lib2.Sequence 
-          [ Lib2.AddMovie "The Matrix" "SciFi" "The Wachowskis" 1999
-          , Lib2.RateMovie 1 4.5
-          , Lib2.RemoveMovie 1
-          ])
-  ]
+statementsAreEqual :: Lib3.Statements -> Lib3.Statements -> Bool
+statementsAreEqual (Lib3.Batch q1) (Lib3.Batch q2) = q1 == q2
+statementsAreEqual (Lib3.Single q1) (Lib3.Single q2) = q1 == q2
+statementsAreEqual _ _ = False

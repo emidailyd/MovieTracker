@@ -5,6 +5,7 @@
 module Lib2
     ( Query(..),
     parseQuery,
+    parseString,
     State(..),
     emptyState,
     stateTransition,
@@ -331,13 +332,12 @@ removeMovieFromList targetId (movie:rest)
 -- as many as needed.
 data State = State
   { movies :: [Movie]      -- list of movies with their details (ID, Title, Genre, Director, Year, Rating)
-  , movieIdCounter :: Int  -- counter for movie IDs
-  }
+  } deriving (Show)
 
 -- | Creates an initial program's state.
 -- It is called once when the program starts.
 emptyState :: State
-emptyState = State {movies = [], movieIdCounter = 0}
+emptyState = State {movies = []}
 
 
 processSequence :: State -> [Query] -> Either String (Maybe String, State)

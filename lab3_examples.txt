@@ -1,0 +1,45 @@
+Welcome! Press [TAB] for auto completion, type ':paste' for multiline input
+>>> add_movie(Gladiator, Action, Ridley Scott, 2000)
+Added movie: (1) "Gladiator" (Action, Ridley Scott, 2000, 0.0)
+>>> :paste
+-- Entering multi-line mode. Press <Ctrl-D> to finish.
+| BEGIN
+| add_movie(Inception, Action, Christopher Nolan, 2010)
+| rate_movie(1, 9.5)
+| list_movies(all)
+| END
+| 
+Added movie: (2) "Inception" (Action, Christopher Nolan, 2010, 0.0)
+Updated movie rating: (1) "Gladiator" (Action, Ridley Scott, 2000, 9.5)
+All Movies:
+(2) "Inception" (Action, Christopher Nolan, 2010, 0.0)
+(1) "Gladiator" (Action, Ridley Scott, 2000, 9.5)
+>>> save
+State saved successfully.
+>>> 
+
+
+
+
+After saving the state above and rerunning the program:
+
+Welcome! Press [TAB] for auto completion, type ':paste' for multiline input
+>>> load
+State loaded successfully.
+>>> list_movies(all)
+All Movies:
+(2) "Inception" (Action, Christopher Nolan, 2010, 0.0)
+(1) "Gladiator" (Action, Ridley Scott, 2000, 9.5)
+>>> 
+
+
+
+
+
+The state.txt file:
+
+BEGIN
+add_movie(Gladiator, Action, Ridley Scott, 2000)
+rate_movie(1, 9.5)
+add_movie(Inception, Action, Christopher Nolan, 2010)
+END

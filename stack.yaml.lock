@@ -11,6 +11,13 @@ packages:
       size: 1392
   original:
     hackage: stm-2.5.1.0
+- completed:
+    hackage: tasty-quickcheck-0.10@sha256:9ddbacf1504bbbc4b99ab447d26651ad8454b69ceced3486e4623dccb89fb3d9,1606
+    pantry-tree:
+      sha256: 31f816277c995f12494efa9e279d87ef0a1e43009a6030ae97b62e501e47df58
+      size: 332
+  original:
+    hackage: tasty-quickcheck-0.10
 snapshots:
 - completed:
     sha256: a81fb3877c4f9031e1325eb3935122e608d80715dc16b586eb11ddbff8671ecd
